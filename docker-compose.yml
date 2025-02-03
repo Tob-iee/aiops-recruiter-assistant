@@ -38,7 +38,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: "823667002813.dkr.ecr.af-south-1.amazonaws.com/recruiter-assistant:b98e06ed852851649e06b01209d797fcddef147b"
+    image: "823667002813.dkr.ecr.af-south-1.amazonaws.com/recruiter-assistant:d3dcd4a89d6d5161e6fdeb60515350f817c7c052"
     # ${GITHUB_SHA}"
     volumes:
       - .:/app
