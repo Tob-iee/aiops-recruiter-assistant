@@ -50,6 +50,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -i private_key.pem docker-compose.yml ${USER_NAME}@${HOSTNAME}:/tmp
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
             cd /tmp
-            docker-compose -p $ECR_REPOSITORY down
-            docker-compose -p $ECR_REPOSITORY up -d
+            docker compose pull
+            docker compose down
+            docker compose up -d
           '
