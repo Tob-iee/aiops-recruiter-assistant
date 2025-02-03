@@ -51,6 +51,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
             cd /tmp
             # docker-compose pull
-            # docker-compose down
-            docker-compose up -d
+            docker-compose down
+            # docker-compose up -d
           '
