@@ -14,6 +14,6 @@ python src/index_resumes.py
 
 # Start the Streamlit application
 echo "Starting Streamlit application..."
-cd src && streamlit run app.py
+cd src && streamlit run app.py --server.port=8501 --server.address=0.0.0.0
 
 
