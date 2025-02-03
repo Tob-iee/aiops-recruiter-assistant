@@ -33,5 +33,7 @@ EXPOSE 8501
 # Command to run the application
 # ENTRYPOINT ["/app/start.sh"] 
 CMD ["/bin/bash", "/app/start.sh"]
+# ENTRYPOINT ["/bin/bash"]
+# CMD ["/app/start.sh"]
 # CMD [""]
 # CMD ["streamlit", "run", "app.py"]
