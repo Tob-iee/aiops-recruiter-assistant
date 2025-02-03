@@ -47,10 +47,15 @@ jobs:
           echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
           sed -i -e 's/GITHUB_SHA/'"$GITHUB_SHA"'/' docker-compose.yml
           sed -i -e 's/ECR_REGISTRY/'"$ECR_REGISTRY"'/' docker-compose.yml
-          scp -o StrictHostKeyChecking=no -i private_key.pem docker-compose.yml ${USER_NAME}@${HOSTNAME}:/tmp
+          
+          scp -o StrictHostKeyChecking=no -i private_key.pem .env ${USER_NAME}@${HOSTNAME}:/home/${USER_NAME}/app/
+          
+          # scp -o StrictHostKeyChecking=no -i private_key.pem docker-compose.yml ${USER_NAME}@${HOSTNAME}:/tmp
+          scp -r -o StrictHostKeyChecking=no -i private_key.pem rag-source-knowledge/ ${USER_NAME}@${HOSTNAME}:/home/${USER_NAME}/app/
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
-            cd /tmp
+            # cd /tmp
+            cd /home/${USER_NAME}/app
             # docker-compose pull
-            docker-compose down
-            # docker-compose up -d
+            # docker-compose down
+            docker-compose up -d
           '
