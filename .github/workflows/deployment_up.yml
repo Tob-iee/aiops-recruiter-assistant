@@ -48,9 +48,6 @@ jobs:
           sed -i -e 's/GITHUB_SHA/'"$GITHUB_SHA"'/' docker-compose.yml
           sed -i -e 's/ECR_REGISTRY/'"$ECR_REGISTRY"'/' docker-compose.yml
           
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ${USERNAME}@${HOSTNAME} '
-          mkdir -p /home/${USERNAME}/app && sudo chown ${USERNAME}:${USERNAME} /home/${USERNAME}/app
-            '
           scp -o StrictHostKeyChecking=no -i private_key.pem .env ${USERNAME}@${HOSTNAME}:/home/${USERNAME}/app/
           
           # scp -o StrictHostKeyChecking=no -i private_key.pem docker-compose.yml ${USERNAME}@${HOSTNAME}:/tmp
