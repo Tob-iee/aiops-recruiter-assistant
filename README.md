@@ -1,75 +1,96 @@
 # AI Recruiter Assistant Documentation
-Overview
-The AI Recruiter Assistant is a web-based tool designed to help recruiters evaluate job applicants more efficiently. The application runs locally and leverages AI to analyze resumes and assess the fitness of candidates for specific job roles. The system integrates a web UI, a PostgreSQL database, and a Retrieval-Augmented Generation (RAG) model to provide a seamless evaluation process.
+
+## Overview
+The **AI Recruiter Assistant** is a web-based tool designed to help recruiters evaluate job applicants efficiently. The application runs locally and leverages AI to analyze resumes and assess candidates for specific job roles. It integrates a **web UI**, a **PostgreSQL database**, and a **Retrieval-Augmented Generation (RAG) model** to streamline the evaluation process.
+
+---
 
 ## Features
-- Web UI: A user-friendly interface for recruiters to upload resumes and select job roles.
+- **Web UI**: A user-friendly interface for recruiters to upload resumes and select job roles.  
+- **Resume Analysis**: Upload a PDF resume and select a job role to evaluate the candidate.  
+- **Job Role Selection**: Choose from a list of job roles stored in a PostgreSQL database.  
+- **AI-Powered Evaluation**:  
+  - Generates questions based on the job description and resume.  
+  - Uses **RAG** to assess the candidate’s suitability for the role.  
+- **Local Deployment**: The entire application runs locally using **Docker**.  
 
-- Resume Analysis: Upload a PDF resume and select a job role to evaluate the candidate.
-
-- Job Role Selection: Choose from a list of job roles stored in a PostgreSQL database.
-
-- AI-Powered Evaluation: The system generates questions based on the job description and resume, then uses RAG to evaluate the candidate's fitness for the role.
-
-- Local Deployment: The entire application runs locally using Docker.
+---
 
 ## Prerequisites
-Before running the AI Recruiter Assistant, ensure you have the following installed on your system:
+Before running the AI Recruiter Assistant, ensure you have the following installed:
 
-- Docker: Install Docker
+- **Docker**: [Install Docker](https://docs.docker.com/get-docker/)  
+- **Docker Compose**: [Install Docker Compose](https://docs.docker.com/compose/install/)  
 
-- Docker Compose: Install Docker Compose
+---
 
-Getting Started
+## Getting Started
 
-1. Set Up Environment Variables
-Create a .env file in the root directory of the project and add the necessary environment variables.
+### 1. Set Up Environment Variables  
+Create a `.env` file in the root directory of the project and add the necessary environment variables.
 
-2. Build and Run the Application
+### 2. Build and Run the Application  
 Run the following command to build and start the application:
-```
-bash
 
+```bash
 docker-compose up
 ```
 This command will:
 
-Start the PostgreSQL database and elastic search vector DB.
+## Application Execution
 
-Build and run the web UI.
+Once the application is running, it will:
 
-Start the AI evaluation service.
+- Start the **PostgreSQL database** and **Elasticsearch vector DB**.  
+- Build and run the **Web UI**.  
+- Start the **AI evaluation service**.  
 
-4. Access the Web UI
-Once the application is running, open your web browser and navigate to:
+---
 
-http://0.0.0.0:8501
+## Accessing the Web UI  
+
+Open your web browser and navigate to:  
+
+👉 [http://0.0.0.0:8501](http://0.0.0.0:8501)  
+
+---
 
 ## Usage
-1. Upload a Resume
-On the web UI, click the "Upload Resume" button to select a PDF resume from your local machine.
 
-2. Select a Job Role
-Choose the job role you want to evaluate the candidate for from the drop-down menu. The job roles are fetched from the recruiting_jobs table in the PostgreSQL database.
+### 1. Upload a Resume  
+- Click the **"Upload Resume"** button on the **Web UI**.  
+- Select a **PDF resume** from your local machine.  
 
-3. Analyze the Resume
-Click the "Analyze Resume" button to start the evaluation process.
+### 2. Select a Job Role  
+- Choose a job role from the **drop-down menu**.  
+- Job roles are fetched from the `recruiting_jobs` table in the **PostgreSQL database**.  
 
-The system will generate a question based on the job description and resume, then use RAG to evaluate the candidate's fitness for the role.
+### 3. Analyze the Resume  
+- Click **"Analyze Resume"** to start the evaluation process.  
+- The system will:  
+  - Generate questions based on the **job description** and **resume**.  
+  - Use **RAG** to evaluate the candidate’s suitability.  
 
-4. View the Evaluation
-The evaluation results will be displayed on the web UI, providing insights into the candidate's suitability for the selected job role.
+### 4. View the Evaluation  
+- The **evaluation results** will be displayed in the **Web UI**.  
+- Insights into the candidate’s suitability for the selected job role will be provided.  
 
+---
 
-## Stopping the Application
-To stop the application, press Ctrl+C in the terminal where the application is running, or run:
+## Stopping the Application  
+To stop the application, press **`Ctrl+C`** in the terminal where it is running, or execute:  
 
-```
-bash
+```bash
 docker-compose down
 ```
 
-Contact
-For any questions or issues, please contact [Your Name] at [your.email@example.com].
+## 📩 Contact  
 
-Thank you for using the AI Recruiter Assistant! We hope this tool helps streamline your recruitment process.
+For any questions or issues, please reach out to:  
+
+📧 **[Your Name]** – [tochukwunwoke1@.gmail.com]  
+
+---
+
+Thank you for using the **AI Recruiter Assistant**! 🚀  
+We hope this tool helps streamline your recruitment process. 
