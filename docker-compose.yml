@@ -38,7 +38,7 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: 823667002813.dkr.ecr.af-south-1.amazonaws.com/recruiter-assistant:latest
+    image: $ECR_REGISTRY/recruiter-assistant:$GITHUB_SHA
     volumes:
       - .:/app
       # - .:/app/start.sh
