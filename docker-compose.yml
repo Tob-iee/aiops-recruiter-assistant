@@ -38,7 +38,8 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: "${ECR_REGISTRY}/recruiter-assistant:${GITHUB_SHA}"
+    image: "${ECR_REGISTRY}/recruiter-assistant:2f3cc1cbe2d631f92ff48274afde746c4f846e8e"
+    # ${GITHUB_SHA}"
     volumes:
       - .:/app
       # - .:/app/start.sh
