@@ -35,9 +35,15 @@ services:
       retries: 5
 
   web:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     image: 823667002813.dkr.ecr.af-south-1.amazonaws.com/recruiter-assistant:latest
     volumes:
-      - .:/app 
+      - .:/app
+      # - .:/app/start.sh
+      # - ./rag-source-knowledge:/app/rag-source-knowledge
+      # - huggingface_cache:/root/.cache/huggingface  
     ports:
       - "${STREAMLIT_PORT:-8501}:8501"
     environment:
@@ -48,7 +54,12 @@ services:
       - ELASTIC_URL=http://elasticsearch:${ELASTIC_PORT:-9200}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - HF_API_KEY=${HF_API_KEY}
-
+      # - TRANSFORMERS_CACHE=/root/.cache/huggingface
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '2'
+    #       memory: 4G
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,3 +70,4 @@ services:
 volumes:
   postgres_data:
   elasticsearch_data:
+  # huggingface_cache:  
