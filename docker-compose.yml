@@ -40,7 +40,7 @@ services:
     #   dockerfile: Dockerfile
     image: "823667002813.dkr.ecr.af-south-1.amazonaws.com/recruiter-assistant:646a79d2bac90f70c617960463e704ca4b6eaed8"
     # ${GITHUB_SHA}"                   
-    command: . start.sh                                                                                                        
+    # command: . start.sh                                                                                                        
     volumes:
       - .:/app
       # - .:/app/start.sh
