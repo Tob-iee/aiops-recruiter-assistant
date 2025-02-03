@@ -31,6 +31,6 @@ RUN chmod +x /app/start.sh && \
 EXPOSE 8501
 
 # Command to run the application
-ENTRYPOINT ["/bin/bash", "/app/start.sh"]
-
+ENTRYPOINT ["/app/start.sh"] 
+# CMD [""]
 # CMD ["streamlit", "run", "app.py"]

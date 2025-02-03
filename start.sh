@@ -2,7 +2,7 @@
 # start.sh
 
 # Set working directory
-cd /app
+# cd /app
 
 # Wait for PostgreSQL to be ready
 echo "Initializing database..."
