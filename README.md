@@ -29,6 +29,32 @@ Before running the AI Recruiter Assistant, ensure you have the following install
 ### 1. Set Up Environment Variables  
 Create a `.env` file in the root directory of the project and add the necessary environment variables.
 
+```.env
+    # PostgreSQL Configuration
+    POSTGRES_HOST=localhost
+    POSTGRES_DB=recruiter_assistant
+    POSTGRES_USER=your_username
+    POSTGRES_PASSWORD=your_password
+    POSTGRES_PORT=5432
+
+    # Elasticsearch Configuration
+    ELASTIC_URL_LOCAL=http://localhost:9200
+    ELASTIC_URL=http://elasticsearch:9200
+    ELASTIC_PORT=9200
+
+    # Streamlit Configuration
+    STREAMLIT_PORT=8501
+
+    OPENAI_API_KEY=""
+    HF_API_KEY=""
+
+    # Other Configuration
+    # EMBEDDED_MODEL_NAME=sentence-transformers/all-mpnet-base-v2
+
+    EMBEDDED_MODEL_NAME=multi-qa-MiniLM-L6-cos-v1
+    INDEX_NAME=recruiter-assistant-resumes
+```
+
 ### 2. Build and Run the Application  
 Run the following command to build and start the application:
 
