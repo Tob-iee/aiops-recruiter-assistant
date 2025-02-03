@@ -55,6 +55,31 @@ Create a `.env` file in the root directory of the project and add the necessary 
     INDEX_NAME=recruiter-assistant-resumes
 ```
 
+## 🛠 Setting Up a Python Virtual Environment  
+
+### 1️⃣ Create a Virtual Environment  
+Run the following command to create a new Python virtual environment:  
+
+```bash
+python3 -m venv .venv
+```
+
+## 2️⃣ Activate the Virtual Environment  
+
+For **Linux/macOS**, use the following command:  
+
+```bash
+source .venv/bin/activate
+```
+
+## 3️⃣ Install Required Packages  
+
+Once the virtual environment is activated, install the required dependencies by running:  
+
+```bash
+pip install -r infrastructure/streamlit/requirements.txt
+```
+
 ### 2. Build and Run the Application  
 Run the following command to build and start the application:
 
