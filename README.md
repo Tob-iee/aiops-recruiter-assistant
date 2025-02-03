@@ -1,7 +1,7 @@
 # AI Recruiter Assistant Documentation
 
 ## Overview
-The **AI Recruiter Assistant** is a web-based tool designed to help recruiters evaluate job applicants efficiently. The application runs locally and leverages AI to analyze resumes and assess candidates for specific job roles. It integrates a **web UI**, a **PostgreSQL database**, and a **Retrieval-Augmented Generation (RAG) model** to streamline the evaluation process.
+The **AI Recruiter Assistant** is a web-based tool designed to help recruiters evaluate job applicants efficiently. The application leverages AI to analyze resumes and assess candidates for specific job roles. It integrates a **web UI**, a **PostgreSQL database**, and a **Retrieval-Augmented Generation (RAG) model** to streamline the evaluation process.
 
 ---
 
@@ -114,7 +114,7 @@ docker-compose down
 
 For any questions or issues, please reach out to:  
 
-📧 **[Your Name]** – [tochukwunwoke1@.gmail.com]  
+📧 **[Nwoke_Tochukwu]** – [tochukwunwoke1@.gmail.com]  
 
 ---
 

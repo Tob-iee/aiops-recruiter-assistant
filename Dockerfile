@@ -35,5 +35,4 @@ EXPOSE 8501
 CMD ["/bin/bash", "/app/start.sh"]
 # ENTRYPOINT ["/bin/bash"]
 # CMD ["/app/start.sh"]
-# CMD [""]
 # CMD ["streamlit", "run", "app.py"]
