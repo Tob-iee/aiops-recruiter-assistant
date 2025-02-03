@@ -177,6 +177,7 @@ cython_debug/
 resources.txt
 steps.txt
 cloud_devops_infra/
-.github/
 archive_data_prep.py
 data_preperation/
+terraform_deploy_steps.txt
+terraform/
