@@ -13,7 +13,7 @@ HF_API_KEY = os.getenv("HF_API_KEY")
 if not HF_API_KEY:
     raise ValueError("Hugging Face API Key is missing! Set 'HUGGINGFACEHUB_API_TOKEN'.")
 
-login(HF_API_KEY)
+# login(HF_API_KEY) # Not required for public models
 
 # The agent_handler.py script contains a function called candidate_question_generator that generates a question based on the job description and the extracted information from a resume. The function uses the CodeAgent class from the smolagents library to create an AI agent that can generate questions. The agent is configured with a model from the Hugging Face Model Hub (HfApiModel) and a tool for extracting text content from a PDF file (extract_pdf_content).
 

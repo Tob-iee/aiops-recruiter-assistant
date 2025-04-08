@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-ELASTIC_URL = os.getenv("ELASTIC_URL_LOCAL")
+ELASTIC_URL = os.getenv("ELASTIC_URL")
 EMBEDDED_MODEL_NAME = os.getenv("EMBEDDED_MODEL_NAME")
 INDEX_NAME = os.getenv("INDEX_NAME")
 
@@ -55,7 +55,7 @@ def setup_elasticsearch():
                     "Id": {"type": "keyword"},
                     "Resume_Vector": {
                         "type": "dense_vector",
-                        "dims": 768,
+                        "dims": 384,
                         "index": True,
                         "similarity": "cosine"
                     }
@@ -90,7 +90,8 @@ def index_documents(es_client, documents):
 
 def main():
     print("Starting the indexing process...")
-    
+
+    time.sleep(10)
     # Wait for Elasticsearch to be ready
     max_retries = 30
     retry_delay = 2

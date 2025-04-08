@@ -77,7 +77,7 @@ source .venv/bin/activate
 Once the virtual environment is activated, install the required dependencies by running:  
 
 ```bash
-pip install -r infrastructure/streamlit/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 2. Build and Run the Application  
@@ -139,7 +139,7 @@ docker-compose down
 
 For any questions or issues, please reach out to:  
 
-📧 **[Nwoke_Tochukwu]** – [tochukwunwoke1@.gmail.com]  
+📧 [Nwoke Tochukwu](tochukwunwoke1@.gmail.com)
 
 ---
 

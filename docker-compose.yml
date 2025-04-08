@@ -2,20 +2,21 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:13
+    # image: postgres:
+    image: postgres:latest
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 10s
+      retries: 20
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.1
@@ -23,15 +24,27 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
+      # - ES_JAVA_OPTS=-Xms1g -Xmx1g
+
+    deploy:
+      resources:
+        limits:
+          memory: 4g   
     ports:
-      - "${ELASTIC_PORT:-9200}:9200"
+      # - "${ELASTIC_PORT:-9200}:9200"
+      - "9200:9200"
       - "9300:9300"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
+    # volumes:
+    #   - elasticsearch_data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://elasticsearch:9200/_cluster/health || exit 1"]
+      # test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s || exit 1"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 5
 
   web:
@@ -40,9 +53,8 @@ services:
       dockerfile: Dockerfile
     # image: "823667002813.dkr.ecr.af-south-1.amazonaws.com/recruiter-assistant:646a79d2bac90f70c617960463e704ca4b6eaed8"
     # ${GITHUB_SHA}"                   
-    # command: . start.sh                                                                                                        
     volumes:
-      - .:/app
+      - ./rag-source-knowledge/:/app/rag-source-knowledge
       # - .:/app/start.sh
       # - ./rag-source-knowledge:/app/rag-source-knowledge
       # - huggingface_cache:/root/.cache/huggingface  
@@ -53,7 +65,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - ELASTIC_URL=http://elasticsearch:${ELASTIC_PORT:-9200}
+      # - ELASTIC_URL=http://elasticsearch:${ELASTIC_PORT:-9200}
+      - ELASTIC_URL=http://elasticsearch:9200
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - HF_API_KEY=${HF_API_KEY}
       # - TRANSFORMERS_CACHE=/root/.cache/huggingface
@@ -68,9 +81,7 @@ services:
       elasticsearch:
         condition: service_healthy
 
-
-volumes:
-  postgres_data:
-  elasticsearch_data:
-  # huggingface_cache:  
+# volumes:
+#   postgres_data:
+#   elasticsearch_data:  
 
