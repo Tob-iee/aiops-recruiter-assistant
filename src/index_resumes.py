@@ -91,14 +91,15 @@ def index_documents(es_client, documents):
 def main():
     print("Starting the indexing process...")
 
-    time.sleep(10)
+    # time.sleep(10)
     # Wait for Elasticsearch to be ready
-    max_retries = 30
+    max_retries = 10
     retry_delay = 2
     
     for i in range(max_retries):
         try:
             es_client = Elasticsearch(ELASTIC_URL)
+            es_client.ping()
             es_client.info()
             print("Successfully connected to Elasticsearch")
             break

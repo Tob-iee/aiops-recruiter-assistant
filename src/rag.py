@@ -14,7 +14,6 @@ load_dotenv()
 ELASTIC_URL = os.getenv("ELASTIC_URL", "http://elasticsearch:9200")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-api-key-here")
 EMBEDDED_MODEL_NAME = os.getenv("EMBEDDED_MODEL_NAME", "multi-qa-MiniLM-L6-cos-v1")
-# CACHE_DIR = "/root/.cache/huggingface"
 
 if not OPENAI_API_KEY:
     raise ValueError("OpenAI API key not found in environment variables")
@@ -23,18 +22,6 @@ es_client = Elasticsearch(ELASTIC_URL)
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
 
 embedded_model = SentenceTransformer(EMBEDDED_MODEL_NAME)
-
-# @lru_cache(maxsize=1)
-# def get_embedded_model():
-#     """Cache the model loading to avoid repeated downloads"""
-#     try:
-#         return SentenceTransformer(
-#             EMBEDDED_MODEL_NAME,
-#             cache_folder=CACHE_DIR
-#         )
-#     except Exception as e:
-#         print(f"Error loading model: {str(e)}")
-#         raise
 
 @lru_cache(maxsize=1)
 def get_embedded_model():
@@ -48,7 +35,7 @@ def get_embedded_model():
 
 def elastic_search_vector(vector_search_term, index_name="recruiter-assistant-resumes"):
     knn = {
-        "field": "Resume_Vector",  # Updated field name
+        "field": "Resume_Vector",  
         "query_vector": vector_search_term,
         "k": 5,
         "num_candidates": 10000,
