@@ -5,6 +5,7 @@ from sentence_transformers import SentenceTransformer
 from elasticsearch import Elasticsearch
 from tqdm.auto import tqdm
 from dotenv import load_dotenv
+from s3_utils import S3Manager 
 
 load_dotenv()
 
@@ -12,17 +13,26 @@ ELASTIC_URL = os.getenv("ELASTIC_URL")
 EMBEDDED_MODEL_NAME = os.getenv("EMBEDDED_MODEL_NAME")
 INDEX_NAME = os.getenv("INDEX_NAME")
 
-DATA_LOCATION = "/app/rag-source-knowledge/Resume_DataSet-with-ids.json"
+# S3 configuration
+S3_RESUME_FILE_KEY = "Resume_DataSet-with-ids.json"  
 
 def fetch_documents():
-    print("Fetching documents...")
+    print("Fetching documents from S3...")
     try:
-        with open(DATA_LOCATION, 'r', encoding='utf-8') as file:
-            documents = json.load(file)
-        print(f"Successfully loaded {len(documents)} documents")
+        # Initialize S3 manager
+        s3_manager = S3Manager()
+        
+        # Check if file exists in S3
+        if not s3_manager.check_file_exists(S3_RESUME_FILE_KEY):
+            raise FileNotFoundError(f"Resume dataset not found in S3: s3://{s3_manager.bucket_name}/{S3_RESUME_FILE_KEY}")
+        
+        # Download JSON file from S3
+        documents = s3_manager.download_json_file(S3_RESUME_FILE_KEY)
+        
+        print(f"Successfully loaded {len(documents)} documents from S3")
         return documents
     except Exception as e:
-        print(f"Error loading documents: {str(e)}")
+        print(f"Error loading documents from S3: {str(e)}")
         return []
 
 def embed_documents(documents):
@@ -91,7 +101,6 @@ def index_documents(es_client, documents):
 def main():
     print("Starting the indexing process...")
 
-    # time.sleep(10)
     # Wait for Elasticsearch to be ready
     max_retries = 10
     retry_delay = 2

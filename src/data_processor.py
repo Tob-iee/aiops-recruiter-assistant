@@ -11,6 +11,7 @@ import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 from dotenv import load_dotenv
+from s3_utils import S3Manager 
 
 pd.set_option('display.max_columns', None)
 
@@ -90,17 +91,22 @@ def clean_dataframe(df):
     except Exception as e:
         raise Exception(f"Error cleaning data: {str(e)}")
 
-def add_status_column(csv_path):
-    """Add random status column to the dataset."""
+def load_csv_from_s3(s3_key):
+    """Load CSV file from S3 and add random status column."""
     try:
-        # Check if file exists
-        if not os.path.exists(csv_path):
-            raise FileNotFoundError(f"CSV file not found at: {csv_path}")
-            
-        # Read the CSV file
-        df = pd.read_csv(csv_path)
-        df =df.drop(columns=['Unnamed: 0'])
-
+        # Initialize S3 manager
+        s3_manager = S3Manager()
+        
+        # Check if file exists in S3
+        if not s3_manager.check_file_exists(s3_key):
+            raise FileNotFoundError(f"CSV file not found in S3: s3://{s3_manager.bucket_name}/{s3_key}")
+        
+        # Download and read the CSV file from S3
+        df = s3_manager.download_csv_file(s3_key)
+        
+        # Drop unnamed columns if they exist
+        df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+        
         # Print original data info
         print("\nOriginal data info:")
         print(df.info())
@@ -108,10 +114,10 @@ def add_status_column(csv_path):
         # Clean and standardize the dataframe
         df = clean_dataframe(df)
         
-        print(f"\nSuccessfully processed dataset with {len(df)} rows")
+        print(f"\nSuccessfully processed dataset with {len(df)} rows from S3")
         return df
     except Exception as e:
-        raise Exception(f"Error processing CSV: {str(e)}")
+        raise Exception(f"Error processing CSV from S3: {str(e)}")
 
 def save_to_database(df):
     """Save the dataframe to PostgreSQL database using psycopg2."""
@@ -199,10 +205,10 @@ def preview_data(df):
 
 def parse_arguments():
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description='Process job descriptions CSV and save to database.')
-    parser.add_argument('csv_path', 
+    parser = argparse.ArgumentParser(description='Process job descriptions CSV from S3 and save to database.')
+    parser.add_argument('s3_key', 
                        type=str,
-                       help='Path to the CSV file containing job descriptions')
+                       help='S3 key for the CSV file containing job descriptions (e.g., job_title_des.csv)')
     parser.add_argument('--preview', 
                        action='store_true',
                        help='Preview the data before saving to database')
@@ -213,19 +219,24 @@ def main():
         # Parse command line arguments
         args = parse_arguments()
         
-        # Step 1: Add status column
-        print(f"Processing CSV file: {args.csv_path}")
-        modified_df = add_status_column(args.csv_path)
+        # Step 1: Load CSV from S3
+        print(f"Processing CSV file from S3: {args.s3_key}")
+        modified_df = load_csv_from_s3(args.s3_key)
         
         # Preview data if requested
         if args.preview:
             preview_data(modified_df)
             
-            # Ask for confirmation before saving to database
-            response = input("\nDo you want to proceed with saving to database? (y/n): ").lower()
-            if response != 'y':
-                print("Operation cancelled by user.")
-                sys.exit(0)
+            # Check if running in interactive environment
+            if sys.stdin.isatty():
+                # Interactive terminal available
+                response = input("\nDo you want to proceed with saving to database? (y/n): ").lower()
+                if response != 'y':
+                    print("Operation cancelled by user.")
+                    sys.exit(0)
+            else:
+                # Non-interactive environment (like Docker)
+                print("\nRunning in non-interactive mode. Auto-proceeding with database save...")
         
         # Step 2: Save to database
         print("\nSaving to database...")
@@ -240,5 +251,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-# docker exec aiops-recruiter-assistant-web-1 python src/data_processor.py /app/rag-source-knowledge/job_title_des.csv --preview
-# python src/data_processor.py rag-source-knowledge/job_title_des.csv --preview
+# Usage examples:
+# python src/data_processor.py job_title_des.csv --preview
+# docker exec container_name python src/data_processor.py job_title_des.csv --preview

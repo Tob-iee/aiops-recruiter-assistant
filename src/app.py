@@ -1,22 +1,17 @@
+import os
+import torch
 import streamlit as st
 from database import get_job_description, init_database
-# from PyPDF2 import PdfReader
 from rag import rag
 from agent_handler import candidate_question_generator
+from s3_utils import S3Manager  
 
-# def extract_pdf_content(pdf_file):
-#     """Extract text content from PDF file."""
-#     try:
-#         pdf_reader = PdfReader(pdf_file)
-#         text_content = ""
-        
-#         for page in pdf_reader.pages:
-#             text_content += page.extract_text() + "\n"
-            
-#         return text_content.strip()
-#     except Exception as e:
-#         raise Exception(f"Error processing PDF: {str(e)}")
+# torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)] 
+
+# or simply:
     
+torch.classes.__path__ = [] # add this line to manually set it to empty. 
+
 def print_log(message):
     print(message, flush=True)
 

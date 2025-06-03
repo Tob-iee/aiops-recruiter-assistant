@@ -4,10 +4,11 @@
 # Set working directory
 # cd /app
 
+# with S3
+
 # Wait for PostgreSQL to be ready
 echo "Initializing database..."
-python src/data_processor.py rag-source-knowledge/job_title_des.csv
-# python src/data_processor.py data/job_title_des.csv
+python src/data_processor.py job_title_des.csv --preview
 
 # Initialize Elasticsearch with resume data
 echo "Initializing Elasticsearch with resume data..."
