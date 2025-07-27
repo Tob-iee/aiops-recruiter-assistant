@@ -4,6 +4,10 @@
 # Base Image: python:3.11-slim
 FROM python:3.11-slim AS compile-image
 
+# Build: dev & build dependencies can be installed here
+# Set the working directory
+WORKDIR /app
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
@@ -12,14 +16,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    TRANSFORMERS_OFFLINE=1 \
     HF_HUB_OFFLINE=1 \
-    HF_HOME=/app/.cache/huggingface 
+    HF_HOME=/app/.cache/huggingface \
+    PIP_DEFAULT_TIMEOUT=300
     # PYTHONPATH=/app 
-
-# Build: dev & build dependencies can be installed here
-# Set the working directory
-WORKDIR /app
 
 # The virtual environment is used to "package" the application
 # and its dependencies in a self-contained way.
@@ -28,6 +28,11 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy requirements first for better cache utilization
 COPY requirements.txt .
+
+# Upgrade pip and configure a fast mirror
+RUN pip install --upgrade pip && \
+    pip config set global.index-url https://pypi.org/simple
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code

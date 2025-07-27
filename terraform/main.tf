@@ -18,14 +18,6 @@ provider "aws" {
 data "aws_ecr_repository" "app" {
   name = "recruiter-assistant" #or var.app_name
 }
-# resource "aws_ecr_repository" "app" {
-#   name                 = "${var.app_name}-app"
-#   image_tag_mutability = "MUTABLE"
-
-#   image_scanning_configuration {
-#     scan_on_push = true
-#   }
-# }
 
 # ECS Cluster
 resource "aws_ecs_cluster" "my_cluster" {
@@ -36,6 +28,14 @@ resource "aws_ecs_cluster" "my_cluster" {
     value = "enabled"
   }
 }
+# resource "aws_ecr_repository" "app" {
+#   name                 = "${var.app_name}-app"
+#   image_tag_mutability = "MUTABLE"
+
+#   image_scanning_configuration {
+#     scan_on_push = true
+#   }
+# }
 
 # Task Definition
 # resource "aws_ecs_task_definition" "app" {
@@ -527,7 +527,7 @@ resource "aws_ecs_task_definition" "app" {
 
 # Create EFS File System
 resource "aws_efs_file_system" "persistent_data" {
-  creation_token = "${var.app_name}-efs"
+  creation_token = "${var.app_name}-efs-${timestamp()}"
   encrypted      = true
 
   tags = {
@@ -578,7 +578,6 @@ resource "aws_efs_mount_target" "persistent_data" {
   count           = length(aws_subnet.ecs_private)
   
   file_system_id  = aws_efs_file_system.persistent_data.id
-  # subnet_id       = module.vpc.private_subnets[count.index]
   subnet_id       = aws_subnet.ecs_private[count.index].id
   security_groups = [aws_security_group.efs.id]
 }
@@ -589,7 +588,6 @@ resource "aws_lb" "main" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
-  # subnets           = module.vpc.public_subnets
   subnets            = aws_subnet.ecs_public[*].id
 }
 
@@ -630,7 +628,7 @@ resource "aws_ecs_service" "app" {
   name            = "${var.app_name}-service"
   cluster         = aws_ecs_cluster.my_cluster.id
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = 1
+  desired_count   = 2
   launch_type     = "FARGATE"
 
   network_configuration {

@@ -11,9 +11,22 @@ resource "aws_security_group" "efs" {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
+    cidr_blocks = [aws_vpc.ecs_vpc.cidr_block]
     security_groups = [aws_security_group.ecs_tasks.id]
   }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.app_name}-efs-sg"
+  }
 }
+
 
 # Security Groups
 resource "aws_security_group" "alb" {

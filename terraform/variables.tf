@@ -72,3 +72,9 @@ variable "hf_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "enable_efs" {
+  description = "Enable EFS resources"
+  type        = bool
+  default     = false
+}
